@@ -273,25 +273,10 @@ function gameOver() {
     ctx.fillText('Game Over', canvas.width / 2, canvas.height / 2);
     ctx.font = FONT;
     ctx.fillText('Score: ' + score, canvas.width / 2, canvas.height / 2 + 50);
-
-    // Create restart button
-    var button = document.createElement('button');
-    button.style.position = 'absolute';
-    button.style.left = '50%';
-    button.style.top = '50%';
-    button.style.transform = 'translate(-50%, -50%)';
-    button.style.padding = '10px 20px';
-    button.style.fontSize = '20px';
-    button.style.fontFamily = FONT;
-    button.style.color = COLOR;
-    button.style.backgroundColor = '#000000';
-    button.style.border = '2px solid ' + COLOR;
-    button.style.cursor = 'pointer';
-    button.innerText = 'Restart Game';
-    button.onclick = function () {
+    ctx.fillText('Click/Tap To Restart');
+    ctx.onclick = function () {
         location.reload();
     };
-    document.body.appendChild(button);
 }
 
 function spawnEnemy() {
