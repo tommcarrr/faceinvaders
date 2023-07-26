@@ -279,7 +279,7 @@ function gameOver() {
     var button = document.createElement('button');
     button.style.position = 'absolute';
     button.style.left = '50%';
-    button.style.top = '70%';
+    button.style.top = '50%';
     button.style.transform = 'translate(-50%, -50%)';
     button.style.padding = '10px 20px';
     button.style.fontSize = '20px';
