@@ -87,6 +87,14 @@ window.addEventListener('keydown', function (event) {
     }
 });
 
+document.addEventListener('touchend', function (event) {
+    let now = (new Date()).getTime();
+    if (now - lastTouchEnd <= 300) {
+        event.preventDefault();
+    }
+    lastTouchEnd = now;
+}, false);
+
 function fire(){
     if (bullets.length < MAX_BULLETS) {
         var bullet = {
