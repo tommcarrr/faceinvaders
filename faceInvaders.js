@@ -12,7 +12,9 @@ const MIN_ENEMY_SPAWN_DELAY = 500; // in milliseconds
 var MAX_ENEMY_SPAWN_DELAY = 2500; // in milliseconds
 const MAX_ENEMY_SPAWN_INCREMENT = -20; // in milliseconds
 const FONT = 'Orbitron, sans-serif';
-const COLOR = '#b700ff';
+const BULLET_COLOR_1 = "#FF0000"; // Red
+const BULLET_COLOR_2 = "#FFFF00"; // Yellow
+var bulletColor = BULLET_COLOR_1;
 
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
@@ -116,7 +118,7 @@ function drawPlayer() {
 }
 
 function drawBullets() {
-    ctx.fillStyle = COLOR;
+    ctx.fillStyle = bulletColor;
     for (var i = 0; i < bullets.length; i++) {
         var bullet = bullets[i];
         ctx.fillRect(bullet.x, bullet.y, bullet.width, bullet.height);
@@ -313,6 +315,15 @@ function spawnPowerUp() {
 
     var nextSpawnDelay = (MIN_ENEMY_SPAWN_DELAY + Math.random() * (MAX_ENEMY_SPAWN_DELAY - MIN_ENEMY_SPAWN_DELAY)) * 6;
     setTimeout(spawnPowerUp, nextSpawnDelay);
+}
+
+function updateBulletColor(){
+    var time = new Date().getTime();
+    if (time % 500 < 250) {
+        bulletColor = BULLET_COLOR_1;
+    } else {
+        bulletColor = BULLET_COLOR_2;
+    }
 }
 
 function gameLoop() {
