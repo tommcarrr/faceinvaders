@@ -1,30 +1,30 @@
 // Configurable values
-var PLAYER_SIZE_MODIFIER = 0.125;
-var PLAYER_SPEED_MODIFIER = 0.0125;
-var MAX_BULLETS = 2;
-var BULLET_SIZE_MODIFIER = 0.0125;
-var BULLET_SPEED_MODIFIER = 0.005;
-var ENEMY_SIZE_MODIFIER = 0.1;
+let PLAYER_SIZE_MODIFIER = 0.125;
+let PLAYER_SPEED_MODIFIER = 0.0125;
+let MAX_BULLETS = 2;
+const BULLET_SIZE_MODIFIER = 0.0125;
+const BULLET_SPEED_MODIFIER = 0.005;
+const ENEMY_SIZE_MODIFIER = 0.1;
 var ENEMY_SPEED_MODIFIER = 0.002;
-var ENEMY_SPEED_INCREMENT = 0.0001;
-var MAX_ENEMY_SIDEWAYS_SPEED = 0.005;
-var MIN_ENEMY_SPAWN_DELAY = 500; // in milliseconds
+const ENEMY_SPEED_INCREMENT = 0.0001;
+const MAX_ENEMY_SIDEWAYS_SPEED = 0.01;
+const MIN_ENEMY_SPAWN_DELAY = 500; // in milliseconds
 var MAX_ENEMY_SPAWN_DELAY = 2500; // in milliseconds
-var MAX_ENEMY_SPAWN_INCREMENT = -1; // in milliseconds
-var FONT = 'Orbitron, sans-serif';
-var COLOR = '#b700ff';
+const MAX_ENEMY_SPAWN_INCREMENT = -20; // in milliseconds
+const FONT = 'Orbitron, sans-serif';
+const COLOR = '#b700ff';
 
-var canvas = document.getElementById('gameCanvas');
-var ctx = canvas.getContext('2d');
+const canvas = document.getElementById('gameCanvas');
+const ctx = canvas.getContext('2d');
 
-var rightButton = document.getElementById('right-button');
-var leftButton = document.getElementById('left-button');
-var fireButton = document.getElementById('fire-button');
+const rightButton = document.getElementById('right-button');
+const leftButton = document.getElementById('left-button');
+const fireButton = document.getElementById('fire-button');
 
 canvas.height = Math.min(window.innerWidth, window.innerHeight) * 0.8;
 canvas.width = canvas.height;
 
-var bgImage = new Image();
+const bgImage = new Image();
 bgImage.src = 'images/background.jpg';
 
 window.addEventListener('resize', function () {
@@ -61,21 +61,21 @@ var enemyImages = ['images/monster.jpg', 'images/jesus.jpg', 'images/guy.jpg',].
 
 var powerUpTypes = ['green', 'blue', 'red'];
 
-leftButton.addEventListener('touchstart', function (event) {
+leftButton.addEventListener('touchstart', function () {
     leftArrowPressed = true;
     rightArrowPressed = false;
 })
-leftButton.addEventListener('touchend', function (event) {
+leftButton.addEventListener('touchend', function () {
     leftArrowPressed = false;
 })
-rightButton.addEventListener('touchstart', function (event) {
+rightButton.addEventListener('touchstart', function () {
     rightArrowPressed = true;
     leftArrowPressed = false;
 })
-rightButton.addEventListener('touchend', function (event) {
+rightButton.addEventListener('touchend', function () {
     rightArrowPressed = false;
 })
-fireButton.addEventListener('touchstart', function (event) {
+fireButton.addEventListener('touchstart', function () {
     fire();
 })
 
