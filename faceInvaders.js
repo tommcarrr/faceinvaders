@@ -59,7 +59,7 @@ var enemyImages = ['images/monster.jpg', 'images/jesus.jpg', 'images/guy.jpg',].
     return img;
 });
 
-var powerUpTypes = ["green", "blue"];
+var powerUpTypes = ['green', 'blue','red'];
 
 leftButton.addEventListener('touchstart', function (event){
     leftArrowPressed = true;
@@ -88,14 +88,6 @@ window.addEventListener('keydown', function (event) {
         fire();
     }
 });
-
-document.addEventListener('touchend', function (event) {
-    let now = (new Date()).getTime();
-    if (now - lastTouchEnd <= 300) {
-        event.preventDefault();
-    }
-    lastTouchEnd = now;
-}, false);
 
 function fire(){
     if (bullets.length < MAX_BULLETS) {
@@ -244,7 +236,12 @@ function checkPowerUps() {
 
             if(powerUp.type === 'blue')
             {
-                PLAYER_SIZE_MODIFIER += PLAYER_SIZE_MODIFIER / 4;
+                PLAYER_SPEED_MODIFIER = PLAYER_SPEED_MODIFIER + (PLAYER_SPEED_MODIFIER / 4);
+            }
+
+            if(powerUp.type === 'red')
+            {
+                PLAYER_SIZE_MODIFIER = (1  -PLAYER_SIZE_MODIFIER) / 5;
             }
         }
     }
