@@ -273,7 +273,7 @@ function gameOver() {
     ctx.fillText('Game Over', canvas.width / 2, canvas.height / 2);
     ctx.font = FONT;
     ctx.fillText('Score: ' + score, canvas.width / 2, canvas.height / 2 + 50);
-    ctx.fillText('Click/Tap To Restart');
+    ctx.fillText('Click/Tap To Restart', canvas.width / 2, canvas.height / 2 + 50);
     ctx.onclick = function () {
         location.reload();
     };
