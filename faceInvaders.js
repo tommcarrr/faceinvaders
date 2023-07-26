@@ -12,6 +12,7 @@ const MIN_ENEMY_SPAWN_DELAY = 500; // in milliseconds
 var MAX_ENEMY_SPAWN_DELAY = 2500; // in milliseconds
 const MAX_ENEMY_SPAWN_INCREMENT = -20; // in milliseconds
 const FONT = 'Orbitron, sans-serif';
+const COLOR = '#b700ff';
 const BULLET_COLOR_1 = "#FF0000"; // Red
 const BULLET_COLOR_2 = "#FFFF00"; // Yellow
 var bulletColor = BULLET_COLOR_1;
