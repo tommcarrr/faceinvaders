@@ -59,23 +59,23 @@ var enemyImages = ['images/monster.jpg', 'images/jesus.jpg', 'images/guy.jpg',].
     return img;
 });
 
-var powerUpTypes = ['green', 'blue','red'];
+var powerUpTypes = ['green', 'blue', 'red'];
 
-leftButton.addEventListener('touchstart', function (event){
+leftButton.addEventListener('touchstart', function (event) {
     leftArrowPressed = true;
     rightArrowPressed = false;
 })
-leftButton.addEventListener('touchend', function (event){
+leftButton.addEventListener('touchend', function (event) {
     leftArrowPressed = false;
 })
-rightButton.addEventListener('touchstart', function (event){
+rightButton.addEventListener('touchstart', function (event) {
     rightArrowPressed = true;
     leftArrowPressed = false;
 })
-rightButton.addEventListener('touchend', function (event){
+rightButton.addEventListener('touchend', function (event) {
     rightArrowPressed = false;
 })
-fireButton.addEventListener('touchstart', function (event){
+fireButton.addEventListener('touchstart', function (event) {
     fire();
 })
 
@@ -89,7 +89,7 @@ window.addEventListener('keydown', function (event) {
     }
 });
 
-function fire(){
+function fire() {
     if (bullets.length < MAX_BULLETS) {
         var bullet = {
             x: player.x + player.width / 2,
@@ -228,21 +228,18 @@ function checkPowerUps() {
             player.y < powerUp.y + powerUp.height &&
             player.y + player.height > powerUp.y) {
             powerUps.splice(i, 1);
-            
-            if(powerUp.type === 'green')
-            {
+
+            if (powerUp.type === 'green') {
                 MAX_BULLETS += 1;
             }
 
-            if(powerUp.type === 'blue')
-            {
+            if (powerUp.type === 'blue') {
                 PLAYER_SPEED_MODIFIER = PLAYER_SPEED_MODIFIER + (PLAYER_SPEED_MODIFIER / 4);
                 player.dx = canvas.width * PLAYER_SPEED_MODIFIER;
             }
 
-            if(powerUp.type === 'red')
-            {
-                PLAYER_SIZE_MODIFIER = (1  -PLAYER_SIZE_MODIFIER) / 5;
+            if (powerUp.type === 'red') {
+                PLAYER_SIZE_MODIFIER = (1 - PLAYER_SIZE_MODIFIER) / 5;
                 player.width = canvas.width * PLAYER_SIZE_MODIFIER;
             }
         }
@@ -270,13 +267,20 @@ function gameOver() {
     ctx.fillStyle = COLOR;
     ctx.font = '50px ' + FONT;
     ctx.textAlign = 'center';
-    ctx.fillText('Game Over', canvas.width / 2, canvas.height / 2);
+    ctx.fillText('Game Over', canvas.width / 2, canvas.height / 2 - 50);
     ctx.font = FONT;
-    ctx.fillText('Score: ' + score, canvas.width / 2, canvas.height / 2 + 50);
+    ctx.fillText('Score: ' + score, canvas.width / 2, canvas.height / 2);
     ctx.fillText('Click/Tap To Restart', canvas.width / 2, canvas.height / 2 + 50);
-    ctx.onclick = function () {
+
+    gameCanvas.addEventListener('click', location.reload());
+
+    gameCanvas.addEventListener('touchend', function (e) {
+        e.preventDefault();
         location.reload();
-    };
+    });
+
+
+    location.reload();
 }
 
 function spawnEnemy() {
