@@ -237,11 +237,13 @@ function checkPowerUps() {
             if(powerUp.type === 'blue')
             {
                 PLAYER_SPEED_MODIFIER = PLAYER_SPEED_MODIFIER + (PLAYER_SPEED_MODIFIER / 4);
+                player.dx = canvas.width * PLAYER_SPEED_MODIFIER;
             }
 
             if(powerUp.type === 'red')
             {
                 PLAYER_SIZE_MODIFIER = (1  -PLAYER_SIZE_MODIFIER) / 5;
+                player.width = canvas.width * PLAYER_SIZE_MODIFIER;
             }
         }
     }
