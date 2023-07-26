@@ -272,9 +272,9 @@ function gameOver() {
     ctx.fillText('Score: ' + score, canvas.width / 2, canvas.height / 2);
     ctx.fillText('Click/Tap To Restart', canvas.width / 2, canvas.height / 2 + 50);
 
-    gameCanvas.addEventListener('click', location.reload());
+    canvas.addEventListener('click', location.reload());
 
-    gameCanvas.addEventListener('touchend', function (e) {
+    canvas.addEventListener('touchend', function (e) {
         e.preventDefault();
         location.reload();
     });
