@@ -62,7 +62,7 @@ var enemyImages = ['images/monster.jpg', 'images/jesus.jpg', 'images/guy.jpg',].
     return img;
 });
 
-var powerUpTypes = ['green', 'blue', 'red'];
+var powerUpTypes = ['green', 'green', 'green', 'blue', 'blue', 'red'];
 
 leftButton.addEventListener('touchstart', function () {
     leftArrowPressed = true;
