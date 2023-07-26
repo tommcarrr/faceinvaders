@@ -5,17 +5,17 @@ let MAX_BULLETS = 2;
 const BULLET_SIZE_MODIFIER = 0.0125;
 const BULLET_SPEED_MODIFIER = 0.005;
 const ENEMY_SIZE_MODIFIER = 0.1;
-var ENEMY_SPEED_MODIFIER = 0.002;
+let ENEMY_SPEED_MODIFIER = 0.002;
 const ENEMY_SPEED_INCREMENT = 0.0001;
 const MAX_ENEMY_SIDEWAYS_SPEED = 0.01;
 const MIN_ENEMY_SPAWN_DELAY = 500; // in milliseconds
-var MAX_ENEMY_SPAWN_DELAY = 2500; // in milliseconds
+let MAX_ENEMY_SPAWN_DELAY = 2500; // in milliseconds
 const MAX_ENEMY_SPAWN_INCREMENT = -20; // in milliseconds
 const FONT = 'Orbitron, sans-serif';
 const COLOR = '#b700ff';
 const BULLET_COLOR_1 = "#FF0000"; // Red
 const BULLET_COLOR_2 = "#FFFF00"; // Yellow
-var bulletColor = BULLET_COLOR_1;
+let bulletColor = BULLET_COLOR_1;
 
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
@@ -35,10 +35,10 @@ window.addEventListener('resize', function () {
     canvas.width = canvas.height;
 });
 
-var playerImage = new Image();
+const playerImage = new Image();
 playerImage.src = 'images/player.jpg';
 
-var player = {
+const player = {
     x: canvas.width / 2,
     y: canvas.height - (canvas.width * PLAYER_SIZE_MODIFIER * 7 / 12),
     width: canvas.width * PLAYER_SIZE_MODIFIER,
@@ -47,22 +47,22 @@ var player = {
     image: playerImage
 };
 
-var bullets = [];
-var enemies = [];
-var powerUps = [];
+const bullets = [];
+const enemies = [];
+const powerUps = [];
 
-var leftArrowPressed = false;
-var rightArrowPressed = false;
+let leftArrowPressed = false;
+let rightArrowPressed = false;
 
-var score = 0;
+let score = 0;
 
-var enemyImages = ['images/monster.jpg', 'images/jesus.jpg', 'images/guy.jpg',].map(function (src) {
-    var img = new Image();
+const enemyImages = ['images/monster.jpg', 'images/jesus.jpg', 'images/guy.jpg',].map(function (src) {
+    const img = new Image();
     img.src = src;
     return img;
 });
 
-var powerUpTypes = ['green', 'green', 'green', 'blue', 'blue', 'red'];
+const powerUpTypes = ['green', 'green', 'green', 'blue', 'blue', 'red'];
 
 leftButton.addEventListener('touchstart', function () {
     leftArrowPressed = true;
@@ -94,7 +94,7 @@ window.addEventListener('keydown', function (event) {
 
 function fire() {
     if (bullets.length < MAX_BULLETS) {
-        var bullet = {
+        const bullet = {
             x: player.x + player.width / 2,
             y: player.y,
             width: canvas.width * BULLET_SIZE_MODIFIER,
@@ -120,22 +120,22 @@ function drawPlayer() {
 
 function drawBullets() {
     ctx.fillStyle = bulletColor;
-    for (var i = 0; i < bullets.length; i++) {
-        var bullet = bullets[i];
+    for (let i = 0; i < bullets.length; i++) {
+        const bullet = bullets[i];
         ctx.fillRect(bullet.x, bullet.y, bullet.width, bullet.height);
     }
 }
 
 function drawEnemies() {
-    for (var i = 0; i < enemies.length; i++) {
-        var enemy = enemies[i];
+    for (let i = 0; i < enemies.length; i++) {
+        const enemy = enemies[i];
         ctx.drawImage(enemy.img, enemy.x, enemy.y, enemy.width, enemy.height);
     }
 }
 
 function drawPowerUps() {
-    for (var i = 0; i < powerUps.length; i++) {
-        var powerUp = powerUps[i];
+    for (let i = 0; i < powerUps.length; i++) {
+        const powerUp = powerUps[i];
         ctx.fillStyle = powerUp.type;
         ctx.fillRect(powerUp.x, powerUp.y, powerUp.width, powerUp.height);
     }
@@ -156,8 +156,8 @@ function movePlayer() {
 }
 
 function moveBullets() {
-    for (var i = 0; i < bullets.length; i++) {
-        var bullet = bullets[i];
+    for (let i = 0; i < bullets.length; i++) {
+        const bullet = bullets[i];
         bullet.y += bullet.dy;
         if (bullet.y < 0) {
             bullets.splice(i, 1);
@@ -167,8 +167,8 @@ function moveBullets() {
 }
 
 function moveEnemies() {
-    for (var i = 0; i < enemies.length; i++) {
-        var enemy = enemies[i];
+    for (let i = 0; i < enemies.length; i++) {
+        const enemy = enemies[i];
         enemy.y += enemy.dy;
         enemy.x += enemy.dx;
         if (enemy.y > canvas.height) {
@@ -182,8 +182,8 @@ function moveEnemies() {
 }
 
 function movePowerUps() {
-    for (var i = 0; i < powerUps.length; i++) {
-        var powerUp = powerUps[i];
+    for (let i = 0; i < powerUps.length; i++) {
+        const powerUp = powerUps[i];
         powerUp.y += powerUp.dy;
         powerUp.x += powerUp.dx;
         if (powerUp.y > canvas.height) {
@@ -197,16 +197,16 @@ function movePowerUps() {
 }
 
 function checkCollision() {
-    for (var i = enemies.length - 1; i >= 0; i--) {
-        var enemy = enemies[i];
+    for (let i = enemies.length - 1; i >= 0; i--) {
+        const enemy = enemies[i];
         if (player.x < enemy.x + enemy.width &&
             player.x + player.width > enemy.x &&
             player.y < enemy.y + enemy.height &&
             player.y + player.height > enemy.y) {
             return true;
         }
-        for (var j = bullets.length - 1; j >= 0; j--) {
-            var bullet = bullets[j];
+        for (let j = bullets.length - 1; j >= 0; j--) {
+            const bullet = bullets[j];
             if (bullet.x < enemy.x + enemy.width &&
                 bullet.x + bullet.width > enemy.x &&
                 bullet.y < enemy.y + enemy.height &&
@@ -224,8 +224,8 @@ function checkCollision() {
 }
 
 function checkPowerUps() {
-    for (var i = powerUps.length - 1; i >= 0; i--) {
-        var powerUp = powerUps[i];
+    for (let i = powerUps.length - 1; i >= 0; i--) {
+        const powerUp = powerUps[i];
         if (player.x < powerUp.x + powerUp.width &&
             player.x + player.width > powerUp.x &&
             player.y < powerUp.y + powerUp.height &&
@@ -287,7 +287,7 @@ function gameOver() {
 }
 
 function spawnEnemy() {
-    var enemy = {
+    const enemy = {
         x: Math.random() * (canvas.width - canvas.width * ENEMY_SIZE_MODIFIER),
         y: 0,
         width: canvas.width * ENEMY_SIZE_MODIFIER,
@@ -298,12 +298,12 @@ function spawnEnemy() {
     };
     enemies.push(enemy);
 
-    var nextSpawnDelay = MIN_ENEMY_SPAWN_DELAY + Math.random() * (MAX_ENEMY_SPAWN_DELAY - MIN_ENEMY_SPAWN_DELAY);
+    const nextSpawnDelay = MIN_ENEMY_SPAWN_DELAY + Math.random() * (MAX_ENEMY_SPAWN_DELAY - MIN_ENEMY_SPAWN_DELAY);
     setTimeout(spawnEnemy, nextSpawnDelay);
 }
 
 function spawnPowerUp() {
-    var powerUp = {
+    const powerUp = {
         type: powerUpTypes[Math.floor(Math.random() * powerUpTypes.length)],
         x: Math.random() * (canvas.width - canvas.width * (ENEMY_SIZE_MODIFIER / 3)),
         y: 0,
@@ -314,12 +314,12 @@ function spawnPowerUp() {
     };
     powerUps.push(powerUp);
 
-    var nextSpawnDelay = (MIN_ENEMY_SPAWN_DELAY + Math.random() * (MAX_ENEMY_SPAWN_DELAY - MIN_ENEMY_SPAWN_DELAY)) * 6;
+    const nextSpawnDelay = (MIN_ENEMY_SPAWN_DELAY + Math.random() * (MAX_ENEMY_SPAWN_DELAY - MIN_ENEMY_SPAWN_DELAY)) * 6;
     setTimeout(spawnPowerUp, nextSpawnDelay);
 }
 
 function updateBulletColor() {
-    var time = new Date().getTime();
+    const time = new Date().getTime();
     if (time % 500 < 250) {
         bulletColor = BULLET_COLOR_1;
     } else {
