@@ -318,7 +318,7 @@ function spawnPowerUp() {
     setTimeout(spawnPowerUp, nextSpawnDelay);
 }
 
-function updateBulletColor(){
+function updateBulletColor() {
     var time = new Date().getTime();
     if (time % 500 < 250) {
         bulletColor = BULLET_COLOR_1;
@@ -332,6 +332,7 @@ function gameLoop() {
     ctx.drawImage(bgImage, 0, 0, canvas.width, canvas.height);
 
     drawPlayer();
+    updateBulletColor();
     drawBullets();
     drawEnemies();
     drawPowerUps();
