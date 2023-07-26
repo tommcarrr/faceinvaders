@@ -169,16 +169,18 @@ function moveBullets() {
 
 function moveEnemies() {
 
-    for (let i = 0; i < enemies.length; i++) {
-        const enemy = enemies[i];
-        enemy.y += enemy.dy;
-        enemy.x += enemy.dx;
-        if (enemy.y > canvas.height) {
-            enemies.splice(i, 1);
-            i--;
-        }
-        if (enemy.x < 0 || enemy.x > canvas.width - enemy.width) {
-            enemy.dx *= -1;
+    if (!enemiesStopped) {
+        for (let i = 0; i < enemies.length; i++) {
+            const enemy = enemies[i];
+            enemy.y += enemy.dy;
+            enemy.x += enemy.dx;
+            if (enemy.y > canvas.height) {
+                enemies.splice(i, 1);
+                i--;
+            }
+            if (enemy.x < 0 || enemy.x > canvas.width - enemy.width) {
+                enemy.dx *= -1;
+            }
         }
     }
 }
