@@ -278,9 +278,6 @@ function gameOver() {
         e.preventDefault();
         location.reload();
     });
-
-
-    location.reload();
 }
 
 function spawnEnemy() {
