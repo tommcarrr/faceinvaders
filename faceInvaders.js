@@ -272,7 +272,10 @@ function gameOver() {
     ctx.fillText('Score: ' + score, canvas.width / 2, canvas.height / 2);
     ctx.fillText('Click/Tap To Restart', canvas.width / 2, canvas.height / 2 + 50);
 
-    canvas.addEventListener('click', location.reload());
+    canvas.addEventListener('click', function (e) {
+        e.preventDefault();
+        location.reload();
+    });
 
     canvas.addEventListener('touchend', function (e) {
         e.preventDefault();
@@ -312,10 +315,6 @@ function spawnPowerUp() {
     setTimeout(spawnPowerUp, nextSpawnDelay);
 }
 
-
-spawnEnemy();
-spawnPowerUp();
-
 function gameLoop() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.drawImage(bgImage, 0, 0, canvas.width, canvas.height);
@@ -340,5 +339,7 @@ function gameLoop() {
     requestAnimationFrame(gameLoop);
 }
 
+spawnEnemy();
+spawnPowerUp();
 gameLoop();
 
