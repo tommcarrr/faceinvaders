@@ -7,7 +7,7 @@ const BULLET_SPEED_MODIFIER = 0.005;
 const ENEMY_SIZE_MODIFIER = 0.1;
 let ENEMY_SPEED_MODIFIER = 0.002;
 const ENEMY_SPEED_INCREMENT = 0.0001;
-const MAX_ENEMY_SIDEWAYS_SPEED = 0.01;
+let MAX_ENEMY_SIDEWAYS_SPEED = 0.005;
 const MIN_ENEMY_SPAWN_DELAY = 500; // in milliseconds
 let MAX_ENEMY_SPAWN_DELAY = 2500; // in milliseconds
 const MAX_ENEMY_SPAWN_INCREMENT = -20; // in milliseconds
@@ -234,6 +234,7 @@ function checkPowerUps() {
 
             if (powerUp.type === 'green') {
                 MAX_BULLETS += 1;
+                MAX_ENEMY_SIDEWAYS_SPEED += 0.001;
             }
 
             if (powerUp.type === 'blue') {
