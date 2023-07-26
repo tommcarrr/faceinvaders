@@ -53,6 +53,7 @@ const powerUps = [];
 
 let leftArrowPressed = false;
 let rightArrowPressed = false;
+let enemiesStopped = false;
 
 let score = 0;
 
@@ -62,7 +63,7 @@ const enemyImages = ['images/monster.jpg', 'images/jesus.jpg', 'images/guy.jpg',
     return img;
 });
 
-const powerUpTypes = ['green', 'green', 'green', 'blue', 'blue', 'red'];
+const powerUpTypes = ['green', 'green', 'green', 'blue', 'blue', 'yellow', 'yellow', 'pink', 'pink', 'red'];
 
 leftButton.addEventListener('touchstart', function () {
     leftArrowPressed = true;
@@ -167,6 +168,7 @@ function moveBullets() {
 }
 
 function moveEnemies() {
+
     for (let i = 0; i < enemies.length; i++) {
         const enemy = enemies[i];
         enemy.y += enemy.dy;
@@ -216,6 +218,7 @@ function checkCollision() {
                 score += Math.ceil((1 + score) * 0.1);
                 ENEMY_SPEED_MODIFIER += ENEMY_SPEED_INCREMENT;
                 MAX_ENEMY_SPAWN_DELAY = Math.max(MAX_ENEMY_SPAWN_DELAY + MAX_ENEMY_SPAWN_INCREMENT, MIN_ENEMY_SPAWN_DELAY);
+                enemiesStopped = false;
                 break;
             }
         }
@@ -245,6 +248,14 @@ function checkPowerUps() {
             if (powerUp.type === 'red') {
                 PLAYER_SIZE_MODIFIER = (1 - PLAYER_SIZE_MODIFIER) / 5;
                 player.width = canvas.width * PLAYER_SIZE_MODIFIER;
+            }
+
+            if (powerUp.type === 'yellow') {
+                enemies.length = 0;
+            }
+
+            if (powerUp.type === 'pink') {
+                enemiesStopped = true;
             }
         }
     }
