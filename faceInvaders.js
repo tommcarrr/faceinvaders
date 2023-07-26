@@ -63,12 +63,14 @@ var powerUpTypes = ["green", "blue"];
 
 leftButton.addEventListener('touchstart', function (event){
     leftArrowPressed = true;
+    rightArrowPressed = false;
 })
 leftButton.addEventListener('touchend', function (event){
     leftArrowPressed = false;
 })
 rightButton.addEventListener('touchstart', function (event){
     rightArrowPressed = true;
+    leftArrowPressed = false;
 })
 rightButton.addEventListener('touchend', function (event){
     rightArrowPressed = false;
