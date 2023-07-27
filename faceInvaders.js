@@ -279,15 +279,24 @@ function checkGameOver() {
 }
 
 function gameOver() {
+
+
+    var highestScore = localStorage.getItem('highestScore');
+
+    if (highestScore === null || score > parseInt(highestScore)) {
+        localStorage.setItem('highestScore', score);
+        highestScore = score
+    }
+
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     // Draw game over text
     ctx.fillStyle = COLOR;
     ctx.font = '50px ' + FONT;
     ctx.textAlign = 'center';
-    ctx.fillText('Game Over', canvas.width / 2, canvas.height / 2 - 50);
-    ctx.font = FONT;
-    ctx.fillText('Score: ' + score, canvas.width / 2, canvas.height / 2);
-    ctx.fillText('Click/Tap To Restart', canvas.width / 2, canvas.height / 2 + 50);
+    ctx.fillText('Game Over', canvas.width / 2, canvas.height / 2 - 75);
+    ctx.fillText('Score: ' + score, canvas.width / 2, canvas.height / 2 - 25);
+    ctx.fillText('High Score: ' + highestScore, canvas.width / 2, canvas.height / 2 + 25);
+    ctx.fillText('Click/Tap To Restart', canvas.width / 2, canvas.height / 2 + 75);
 
     canvas.addEventListener('click', function (e) {
         e.preventDefault();
