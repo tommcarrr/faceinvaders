@@ -1,0 +1,104 @@
+* {
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+}
+
+body {
+    height: 100vh;
+    background-color: #000;
+    background: linear-gradient(#000, #111);
+    color: #b700ff;
+    font-family: 'Orbitron', sans-serif;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+}
+
+#gameCanvas {
+    border: 2px solid #b700ff;
+    background-color: #000;
+    margin-top: 2em;
+}
+
+h1 {
+    font-size: 3em;
+    margin: 0;
+    padding: 0.1em;
+}
+
+.button-container {
+    visibility: hidden;
+}
+
+.links {
+    font-size: 1.5em;
+    font-weight: 600;
+    padding: 0.1em;
+}
+
+@media only screen and (max-width: 600px) {
+
+    body {
+        display: flex;
+        flex-direction: column;
+        height: 92vh;
+        justify-content: space-between;
+    }
+
+    #gameCanvas {
+
+        border: 0;
+        display: block;
+        width: 100%;
+        height: auto;
+        margin: 0 auto;
+    }
+
+    h1 {
+        margin-top: 0.5em;
+        font-size: 2em;
+    }
+
+    .button-container {
+        visibility: visible;
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        user-select: none;
+    }
+
+    .button-container>div {
+        width: 100%;
+        height: 40%;
+    }
+
+    .button-container>div>button {
+        width: 100%;
+        height: 100%;
+        border: none;
+        font-size: 2em;
+        color: #fff;
+        padding: 10px;
+        text-align: center;
+        border-radius: 10px;
+        color: white;
+        text-shadow: 1px 1px 2px black;
+        transition: all 0.1s ease-in-out;
+    }
+
+    .red {
+        /* background-color: red; */
+        background: linear-gradient(red, rgb(100, 10, 10));
+    }
+
+    .blue {
+        background: linear-gradient(blue, rgb(10, 10, 100));
+        width: 50%;
+    }
+
+    .row {
+        display: flex;
+        height: 40%;
+    }
+}

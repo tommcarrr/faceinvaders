@@ -1,12 +1,12 @@
 // Configurable values
 let PLAYER_SIZE_MODIFIER = 0.125;
 let PLAYER_SPEED_MODIFIER = 0.0125;
-let MAX_BULLETS = 2;
+let MAX_BULLETS = 3;
 const BULLET_SIZE_MODIFIER = 0.0125;
 const BULLET_SPEED_MODIFIER = 0.005;
 const ENEMY_SIZE_MODIFIER = 0.1;
-let ENEMY_SPEED_MODIFIER = 0.002;
-const ENEMY_SPEED_INCREMENT = 0.0001;
+let ENEMY_SPEED_MODIFIER = 0.0017;
+const ENEMY_SPEED_INCREMENT = 0.00015;
 let MAX_ENEMY_SIDEWAYS_SPEED = 0.005;
 const MIN_ENEMY_SPAWN_DELAY = 500; // in milliseconds
 let MAX_ENEMY_SPAWN_DELAY = 2500; // in milliseconds
@@ -24,14 +24,23 @@ const rightButton = document.getElementById('right-button');
 const leftButton = document.getElementById('left-button');
 const fireButton = document.getElementById('fire-button');
 
-canvas.height = Math.min(window.innerWidth, window.innerHeight) * 0.8;
+canvas.height = Math.min(window.innerWidth - 4, window.innerHeight) * 0.8;
+if (canvas.height > 600) {
+    canvas.height = window.innerHeight - 280;
+}
 canvas.width = canvas.height;
+
+const fontSizeHeader = canvas.height * 0.08;
+const fontSize = canvas.height * 0.06;
 
 const bgImage = new Image();
 bgImage.src = 'images/background.jpg';
 
 window.addEventListener('resize', function () {
-    canvas.height = Math.min(window.innerWidth, window.innerHeight) * 0.8;
+    canvas.height = Math.min(window.innerWidth - 4, window.innerHeight) * 0.8;
+    if (canvas.height <= 600) {
+        canvas.height = window.innerHeight - 200;
+    }
     canvas.width = canvas.height;
 });
 
@@ -144,8 +153,8 @@ function drawPowerUps() {
 
 function drawScore() {
     ctx.fillStyle = '#fff';
-    ctx.font = '40px ' + FONT;
-    ctx.fillText('Score: ' + score, 20, 40);
+    ctx.font = fontSizeHeader + 'px ' + FONT;
+    ctx.fillText('Score: ' + score, 20, fontSizeHeader);
 }
 
 function movePlayer() {
@@ -248,8 +257,9 @@ function checkPowerUps() {
             }
 
             if (powerUp.type === 'red') {
-                PLAYER_SIZE_MODIFIER = (1 - PLAYER_SIZE_MODIFIER) / 5;
-                player.width = canvas.width * PLAYER_SIZE_MODIFIER;
+                if (player.width <= canvas.width) {
+                    player.width = player.width * 1.5;
+                }
             }
 
             if (powerUp.type === 'yellow') {
@@ -289,14 +299,16 @@ function gameOver() {
     }
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+
     // Draw game over text
     ctx.fillStyle = COLOR;
-    ctx.font = '50px ' + FONT;
+    ctx.font = fontSizeHeader + 'px ' + FONT;
     ctx.textAlign = 'center';
-    ctx.fillText('Game Over', canvas.width / 2, canvas.height / 2 - 75);
-    ctx.fillText('Score: ' + score, canvas.width / 2, canvas.height / 2 - 25);
-    ctx.fillText('High Score: ' + highestScore, canvas.width / 2, canvas.height / 2 + 25);
-    ctx.fillText('Click/Tap To Restart', canvas.width / 2, canvas.height / 2 + 75);
+    ctx.fillText('Game Over', canvas.width / 2, canvas.height / 2 - 3 * fontSize);
+    ctx.font = fontSize + 'px ' + FONT;
+    ctx.fillText('Score: ' + score, canvas.width / 2, canvas.height / 2 - fontSize);
+    ctx.fillText('High Score: ' + highestScore, canvas.width / 2, canvas.height / 2 + fontSize);
+    ctx.fillText('Click/Tap To Restart', canvas.width / 2, canvas.height / 2 + 3 * fontSize);
 
     canvas.addEventListener('click', function (e) {
         e.preventDefault();
