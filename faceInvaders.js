@@ -145,7 +145,7 @@ function drawPowerUps() {
 function drawScore() {
     ctx.fillStyle = '#fff';
     ctx.font = '40px ' + FONT;
-    ctx.fillText('Score: ' + score, 10, 30);
+    ctx.fillText('Score: ' + score, 20, 40);
 }
 
 function movePlayer() {
