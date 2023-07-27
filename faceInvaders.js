@@ -143,8 +143,8 @@ function drawPowerUps() {
 }
 
 function drawScore() {
-    ctx.fillStyle = COLOR;
-    ctx.font = '20px ' + FONT;
+    ctx.fillStyle = '#fff';
+    ctx.font = '40px ' + FONT;
     ctx.fillText('Score: ' + score, 10, 30);
 }
 
