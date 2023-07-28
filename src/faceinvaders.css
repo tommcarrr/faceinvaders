@@ -49,15 +49,23 @@ h1 {
     padding: 0.1em;
 }
 
-.links > a {    
+.links>a {
     font-size: 1.5em;
     font-weight: 600;
 }
 
 @media only screen and (max-width: 400px) {
-
-    .links > a {
+    .links>a {
         font-size: 1.1em;
+    }
+}
+
+@media only screen and (max-height: 700px) {
+
+    h1 {
+        font-family: 'Press Start 2P', cursive;
+        font-size: 1.5em !important;
+        padding: 0.1em;
     }
 }
 
