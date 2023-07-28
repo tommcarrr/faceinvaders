@@ -129,6 +129,7 @@ h1 {
     .red {
         /* background-color: red; */
         background: linear-gradient(red, rgb(100, 10, 10));
+        width: 100%;
     }
 
     .blue {
