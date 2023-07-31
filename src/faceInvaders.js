@@ -124,12 +124,14 @@ function doCanvasSize() {
 }
 
 function createSound(url, loop = false) {
-    var sound = {
+    const sound = {
         buffer: null,
         source: null,
+        loaded: false, // Track if the sound is loaded
+        loadedPromise: null, // Promise to wait for the sound to be loaded
         play: function () {
-            this.stop(); // Stop any currently playing sound
-            if (this.buffer) {
+            if (this.loaded) { // Only play if loaded
+                this.stop(); // Stop any currently playing sound
                 this.source = audioContext.createBufferSource();
                 this.source.buffer = this.buffer;
                 this.source.loop = loop;
@@ -140,15 +142,26 @@ function createSound(url, loop = false) {
         stop: function () {
             if (this.source) {
                 this.source.stop(0);
+                this.source.disconnect(); // Disconnect the source after stopping
                 this.source = null;
             }
+        },
+        isLoaded: function () {
+            return this.loaded;
+        },
+        waitForLoad: function () {
+            return this.loadedPromise;
         }
     };
 
-    fetch(url)
+    sound.loadedPromise = fetch(url)
         .then(response => response.arrayBuffer())
         .then(buffer => audioContext.decodeAudioData(buffer))
-        .then(decodedAudio => sound.buffer = decodedAudio);
+        .then(decodedAudio => {
+            sound.buffer = decodedAudio;
+            sound.loaded = true; // Mark as loaded
+        })
+        .catch(error => console.error('Error loading and decoding audio:', error));
 
     return sound;
 }
@@ -352,7 +365,7 @@ function gameOver() {
 
     gameOverSound.play();
 
-    var highestScore = localStorage.getItem('highestScore');
+    let highestScore = localStorage.getItem('highestScore');
 
     if (highestScore === null || score > parseInt(highestScore)) {
         localStorage.setItem('highestScore', score);
@@ -377,7 +390,7 @@ function gameOver() {
 
 function preGame() {
 
-    var highestScore = localStorage.getItem('highestScore');
+    let highestScore = localStorage.getItem('highestScore');
 
     if (highestScore === null || score > parseInt(highestScore)) {
         localStorage.setItem('highestScore', score);
@@ -505,9 +518,9 @@ function startGame() {
         image: PLAYER_IMAGE
     };
 
-    if (backgroundMusic) {
-        backgroundMusic.play();
-    }
+    backgroundMusic.waitForLoad().then(() => {
+        backgroundMusic.play(); // Start playing
+    });
 
     spawnEnemy();
     spawnPowerUp();
