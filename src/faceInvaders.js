@@ -42,8 +42,9 @@ let powerUpTimeout;
 
 let muted = false;
 
-// Sounds
 const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+
+// Sounds
 
 const backgroundMusic = createSound('sounds/sfs.mp3', true);
 
@@ -124,32 +125,41 @@ function doCanvasSize() {
 
 function createSound(url, loop = false) {
     var sound = {
-      buffer: null,
-      play: function() {
-        if (this.buffer) {
-          var source = audioContext.createBufferSource();
-          source.buffer = this.buffer;
-          source.loop = loop; // Set the loop property
-          source.connect(audioContext.destination);
-          source.start(0);
+        buffer: null,
+        source: null,
+        play: function () {
+            this.stop(); // Stop any currently playing sound
+            if (this.buffer) {
+                this.source = audioContext.createBufferSource();
+                this.source.buffer = this.buffer;
+                this.source.loop = loop;
+                this.source.connect(audioContext.destination);
+                this.source.start(0);
+            }
+        },
+        stop: function () {
+            if (this.source) {
+                this.source.stop(0);
+                this.source = null;
+            }
         }
-      }
     };
-  
+
     fetch(url)
-      .then(response => response.arrayBuffer())
-      .then(buffer => audioContext.decodeAudioData(buffer))
-      .then(decodedAudio => sound.buffer = decodedAudio);
-  
+        .then(response => response.arrayBuffer())
+        .then(buffer => audioContext.decodeAudioData(buffer))
+        .then(decodedAudio => sound.buffer = decodedAudio);
+
     return sound;
-  }
+}
+
 
 function muteUnMute() {
     if (muted) {
         backgroundMusic.play();
     } else {
-        backgroundMusic.pause();
-    }    
+        backgroundMusic.stop();
+    }
     muted = !muted;
 }
 
@@ -455,6 +465,9 @@ function gameLoop() {
 
 function startGame() {
 
+    if (audioContext.state === 'suspended') {
+        audioContext.resume();
+    }
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
