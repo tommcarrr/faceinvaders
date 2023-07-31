@@ -127,16 +127,23 @@ function createSound(url, loop = false) {
     const sound = {
         buffer: null,
         source: null,
-        loaded: false, // Track if the sound is loaded
-        loadedPromise: null, // Promise to wait for the sound to be loaded
+        loaded: false,
+        playing: false,
+        loadedPromise: null,
         play: function () {
-            if (this.loaded) { // Only play if loaded
-                this.stop(); // Stop any currently playing sound
+            if (this.loaded) {
+                this.stop();
                 this.source = audioContext.createBufferSource();
                 this.source.buffer = this.buffer;
                 this.source.loop = loop;
                 this.source.connect(audioContext.destination);
                 this.source.start(0);
+                this.playing = true;
+                if (!loop) {
+                    this.source.onended = () => {
+                        this.playing = false;
+                    };
+                }
             }
         },
         stop: function () {
@@ -144,6 +151,7 @@ function createSound(url, loop = false) {
                 this.source.stop(0);
                 this.source.disconnect(); // Disconnect the source after stopping
                 this.source = null;
+                this.playing = false;
             }
         },
         isLoaded: function () {
@@ -518,9 +526,11 @@ function startGame() {
         image: PLAYER_IMAGE
     };
 
-    backgroundMusic.waitForLoad().then(() => {
-        backgroundMusic.play(); // Start playing
-    });
+    if (!backgroundMusic.playing) {
+        backgroundMusic.waitForLoad().then(() => {
+            backgroundMusic.play(); // Start playing
+        });
+    }
 
     spawnEnemy();
     spawnPowerUp();
