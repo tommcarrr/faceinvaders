@@ -141,4 +141,19 @@ h1 {
         display: flex;
         height: 40%;
     }
+
+    #startButton {
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+        border: 2px solid #FFF;
+        background-color: #000;
+        color: #FFF;
+        transition: background-color 0.3s;
+    }
+    
+    #startButton:hover {
+        background-color: #FFF;
+        color: #000;
+    }
 }

@@ -30,7 +30,7 @@
 </head>
 
 <body>
-    <h1>Face Invaders</h1>
+    <h1 id="header">Face Invaders</h1>
     <p class="links">
         <a href="https://www.facebook.com/velvetfistband" target="_blank">Facebook</a> |
         <a href="https://www.instagram.com/velvetfistband/" target="_blank">Instagram</a> |
@@ -41,8 +41,10 @@
     <div class="controls">
         <p>Left/Right - Arrow Keys | Space - Fire</p>
     </div>
-    <canvas id="gameCanvas"></canvas>
-    <div class="button-container">
+    <div id="gameCanvasContainer">
+        <canvas id="gameCanvas"></canvas>
+    </div>
+    <div class="button-container" id="button-container">
         <div>
             <button class="red" id="fire-button">FIRE</button>
         </div>

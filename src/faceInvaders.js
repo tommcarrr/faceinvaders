@@ -24,19 +24,32 @@ const ENEMY_IMAGES = ['images/monster.jpg', 'images/jesus.jpg', 'images/guy.jpg'
     return img;
 });
 
-
 // Variables
-let playerSizeModifier = 0.125;
-let playerSpeedModifier = 0.0125;
-let maxBullets = 3;
-let enemySpeedModifier = 0.0017;
-let maxEnemySidewaysSpeed = 0.005;
-let maxEnemySpawnDelay = 2500; // in milliseconds
-let bulletColor = BULLET_COLOR_1;
-let leftArrowPressed = false;
-let rightArrowPressed = false;
-let enemiesStopped = false;
-let score = 0;
+let playerSizeModifier;
+let playerSpeedModifier;
+let maxBullets;
+let enemySpeedModifier;
+let maxEnemySidewaysSpeed;
+let maxEnemySpawnDelay; // in milliseconds
+let bulletColor;
+let leftArrowPressed;
+let rightArrowPressed;
+let enemiesStopped;
+let score;
+
+let enemyTimeout;
+let powerUpTimeout;
+
+let muted = false;
+
+// Sounds
+const backgroundMusic = new Audio('sounds/sfs.mp3');
+backgroundMusic.loop = true; // Set this to true if you want the music to loop
+
+const shootSound = new Audio('sounds/laserShoot.wav');
+const hitSound = new Audio('sounds/explosion.wav');
+const powerupSound = new Audio('sounds/powerUp.wav');
+const gameOverSound = new Audio('sounds/gameOver.wav');
 
 // Elements
 const canvas = document.getElementById('gameCanvas');
@@ -45,37 +58,31 @@ const rightButton = document.getElementById('right-button');
 const leftButton = document.getElementById('left-button');
 const fireButton = document.getElementById('fire-button');
 
-// Set Canvas Size
-let { fontSizeHeader, fontSize } = doCanvasSize();
+let fontSizeHeader;
+let fontSize;
 
-window.addEventListener('resize',  () => {
+({ fontSizeHeader, fontSize } = doCanvasSize());
+
+window.addEventListener('resize', () => {
     ({ fontSizeHeader, fontSize } = doCanvasSize());
 });
 
 // Create Player
-const PLAYER = {
-    x: canvas.width / 2,
-    y: canvas.height - (canvas.width * playerSizeModifier * 7 / 12),
-    width: canvas.width * playerSizeModifier,
-    height: canvas.width * playerSizeModifier * 7 / 12,
-    dx: canvas.width * playerSpeedModifier,
-    image: PLAYER_IMAGE
-};
-
+let PLAYER;
 
 // Event Handlers
 leftButton.addEventListener('touchstart', () => {
     leftArrowPressed = true;
     rightArrowPressed = false;
 })
-leftButton.addEventListener('touchend',  () => {
+leftButton.addEventListener('touchend', () => {
     leftArrowPressed = false;
 })
-rightButton.addEventListener('touchstart',  () => {
+rightButton.addEventListener('touchstart', () => {
     rightArrowPressed = true;
     leftArrowPressed = false;
 })
-rightButton.addEventListener('touchend',  () => {
+rightButton.addEventListener('touchend', () => {
     rightArrowPressed = false;
 })
 fireButton.addEventListener('touchstart', fire);
@@ -87,6 +94,8 @@ window.addEventListener('keydown', (event) => {
         rightArrowPressed = true;
     } else if (event.key === ' ') {
         fire();
+    } else if (event.key === 'm') {
+        muteUnMute();
     }
 });
 
@@ -112,6 +121,15 @@ function doCanvasSize() {
     return { fontSizeHeader, fontSize };
 }
 
+function muteUnMute() {
+    if (muted) {
+        backgroundMusic.play();
+    } else {
+        backgroundMusic.pause();
+    }    
+    muted = !muted;
+}
+
 function fire() {
     if (BULLETS.length < maxBullets) {
         const bullet = {
@@ -122,6 +140,9 @@ function fire() {
             dy: -canvas.width * BULLET_SPEED_MODIFIER
         };
         BULLETS.push(bullet);
+        shootSound.pause();
+        shootSound.currentTime = 0;
+        shootSound.play();
     }
 }
 
@@ -232,6 +253,9 @@ function checkCollision() {
                 enemySpeedModifier += ENEMY_SPEED_INCREMENT;
                 maxEnemySpawnDelay = Math.max(maxEnemySpawnDelay + MAX_ENEMY_SPAWN_INCREMENT, MIN_ENEMY_SPAWN_DELAY);
                 enemiesStopped = false;
+                hitSound.pause();
+                hitSound.currentTime = 0;
+                hitSound.play();
                 break;
             }
         }
@@ -270,10 +294,14 @@ function checkPowerUps() {
 
             if (powerUp.type === 'pink') {
                 enemiesStopped = true;
-                setTimeout( () => {
+                setTimeout(() => {
                     enemiesStopped = false;
                 }, 5000)
             }
+
+            powerupSound.pause();
+            powerupSound.currentTime = 0;
+            powerupSound.play();
         }
     }
 }
@@ -295,6 +323,8 @@ function checkGameOver() {
 
 function gameOver() {
 
+    gameOverSound.play();
+
     var highestScore = localStorage.getItem('highestScore');
 
     if (highestScore === null || score > parseInt(highestScore)) {
@@ -314,15 +344,30 @@ function gameOver() {
     ctx.fillText('High Score: ' + highestScore, canvas.width / 2, canvas.height / 2 + fontSize);
     ctx.fillText('Click/Tap To Restart', canvas.width / 2, canvas.height / 2 + 3 * fontSize);
 
-    canvas.addEventListener('click', function (e) {
-        e.preventDefault();
-        location.reload();
-    });
+    canvas.addEventListener('click', startGame);
+    canvas.addEventListener('touchend', startGame);
+}
 
-    canvas.addEventListener('touchend', function (e) {
-        e.preventDefault();
-        location.reload();
-    });
+function preGame() {
+
+    var highestScore = localStorage.getItem('highestScore');
+
+    if (highestScore === null || score > parseInt(highestScore)) {
+        localStorage.setItem('highestScore', score);
+        highestScore = score
+    }
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Draw game over text
+    ctx.fillStyle = COLOR;
+    ctx.font = fontSizeHeader + 'px ' + FONT;
+    ctx.textAlign = 'center';
+    ctx.fillText('High Score: ' + highestScore, canvas.width / 2, canvas.height / 2 - fontSize);
+    ctx.fillText('Click/Tap To Start', canvas.width / 2, canvas.height / 2 + fontSize);
+
+    canvas.addEventListener('click', startGame);
+    canvas.addEventListener('touchend', startGame);
 }
 
 function spawnEnemy() {
@@ -338,7 +383,7 @@ function spawnEnemy() {
     ENEMIES.push(enemy);
 
     const nextSpawnDelay = MIN_ENEMY_SPAWN_DELAY + Math.random() * (maxEnemySpawnDelay - MIN_ENEMY_SPAWN_DELAY);
-    setTimeout(spawnEnemy, nextSpawnDelay);
+    enemyTimeout = setTimeout(spawnEnemy, nextSpawnDelay);
 }
 
 function spawnPowerUp() {
@@ -354,7 +399,7 @@ function spawnPowerUp() {
     POWERUPS.push(powerUp);
 
     const nextSpawnDelay = (MIN_ENEMY_SPAWN_DELAY + Math.random() * (maxEnemySpawnDelay - MIN_ENEMY_SPAWN_DELAY)) * 6;
-    setTimeout(spawnPowerUp, nextSpawnDelay);
+    powerUpTimeout = setTimeout(spawnPowerUp, nextSpawnDelay);
 }
 
 function updateBulletColor() {
@@ -391,10 +436,54 @@ function gameLoop() {
     requestAnimationFrame(gameLoop);
 }
 
-// Init methods for spawning
-spawnEnemy();
-spawnPowerUp();
+function startGame() {
 
-// Game loop
-gameLoop();
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    canvas.removeEventListener('click', startGame);
+    canvas.removeEventListener('touchend', startGame);
+
+    clearTimeout(enemyTimeout);
+    clearTimeout(powerUpTimeout);
+
+    ENEMIES.length = 0;
+    BULLETS.length = 0;
+    POWERUPS.length = 0;
+
+    playerSizeModifier = 0.125;
+    playerSpeedModifier = 0.0125;
+    maxBullets = 3;
+    enemySpeedModifier = 0.0017;
+    maxEnemySidewaysSpeed = 0.005;
+    maxEnemySpawnDelay = 2500; // in milliseconds
+    bulletColor = BULLET_COLOR_1;
+    leftArrowPressed = false;
+    rightArrowPressed = false;
+    enemiesStopped = false;
+    score = 0;
+
+    // Set Canvas Size
+    ({ fontSizeHeader, fontSize } = doCanvasSize());
+
+    PLAYER = {
+        x: canvas.width / 2,
+        y: canvas.height - (canvas.width * playerSizeModifier * 7 / 12),
+        width: canvas.width * playerSizeModifier,
+        height: canvas.width * playerSizeModifier * 7 / 12,
+        dx: canvas.width * playerSpeedModifier,
+        image: PLAYER_IMAGE
+    };
+
+    if (backgroundMusic) {
+        backgroundMusic.play();
+    }
+
+    spawnEnemy();
+    spawnPowerUp();
+
+    gameLoop();
+}
+
+preGame();
 
