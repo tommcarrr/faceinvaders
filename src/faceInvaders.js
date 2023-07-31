@@ -43,13 +43,14 @@ let powerUpTimeout;
 let muted = false;
 
 // Sounds
-const backgroundMusic = new Audio('sounds/sfs.mp3');
-backgroundMusic.loop = true; // Set this to true if you want the music to loop
+const audioContext = new (window.AudioContext || window.webkitAudioContext)();
 
-const shootSound = new Audio('sounds/laserShoot.wav');
-const hitSound = new Audio('sounds/explosion.wav');
-const powerupSound = new Audio('sounds/powerUp.wav');
-const gameOverSound = new Audio('sounds/gameOver.wav');
+const backgroundMusic = createSound('sounds/sfs.mp3', true);
+
+const shootSound = createSound('sounds/laserShoot.wav');
+const hitSound = createSound('sounds/explosion.wav');
+const powerupSound = createSound('sounds/powerUp.wav');
+const gameOverSound = createSound('sounds/gameOver.wav');
 
 // Elements
 const canvas = document.getElementById('gameCanvas');
@@ -121,6 +122,28 @@ function doCanvasSize() {
     return { fontSizeHeader, fontSize };
 }
 
+function createSound(url, loop = false) {
+    var sound = {
+      buffer: null,
+      play: function() {
+        if (this.buffer) {
+          var source = audioContext.createBufferSource();
+          source.buffer = this.buffer;
+          source.loop = loop; // Set the loop property
+          source.connect(audioContext.destination);
+          source.start(0);
+        }
+      }
+    };
+  
+    fetch(url)
+      .then(response => response.arrayBuffer())
+      .then(buffer => audioContext.decodeAudioData(buffer))
+      .then(decodedAudio => sound.buffer = decodedAudio);
+  
+    return sound;
+  }
+
 function muteUnMute() {
     if (muted) {
         backgroundMusic.play();
@@ -140,8 +163,6 @@ function fire() {
             dy: -canvas.width * BULLET_SPEED_MODIFIER
         };
         BULLETS.push(bullet);
-        shootSound.pause();
-        shootSound.currentTime = 0;
         shootSound.play();
     }
 }
@@ -253,8 +274,6 @@ function checkCollision() {
                 enemySpeedModifier += ENEMY_SPEED_INCREMENT;
                 maxEnemySpawnDelay = Math.max(maxEnemySpawnDelay + MAX_ENEMY_SPAWN_INCREMENT, MIN_ENEMY_SPAWN_DELAY);
                 enemiesStopped = false;
-                hitSound.pause();
-                hitSound.currentTime = 0;
                 hitSound.play();
                 break;
             }
@@ -299,8 +318,6 @@ function checkPowerUps() {
                 }, 5000)
             }
 
-            powerupSound.pause();
-            powerupSound.currentTime = 0;
             powerupSound.play();
         }
     }
