@@ -398,12 +398,7 @@ function gameOver() {
 
 function preGame() {
 
-    let highestScore = localStorage.getItem('highestScore');
-
-    if (highestScore === null || score > parseInt(highestScore)) {
-        localStorage.setItem('highestScore', score);
-        highestScore = score
-    }
+    let highestScore = localStorage.getItem('highestScore') ?? 0;
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
