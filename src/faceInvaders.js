@@ -411,6 +411,9 @@ function preGame() {
 
     canvas.addEventListener('click', startGame);
     canvas.addEventListener('touchend', startGame);
+
+    fireButton.innerText = 'START'
+    fireButton.addEventListener('touchend', startGame);
 }
 
 function spawnEnemy() {
@@ -485,7 +488,11 @@ function startGame() {
         audioContext.resume();
     }
 
+
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+    
+    fireButton.innerText = 'FIRE'
+    fireButton.removeEventListener('touchend', startGame);
 
     canvas.removeEventListener('click', startGame);
     canvas.removeEventListener('touchend', startGame);
