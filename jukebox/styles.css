@@ -1,0 +1,63 @@
+body {
+    background-color: #1a1a1a;
+    color: white;
+    font-family: "Courier New", monospace;
+    text-align: center;
+    margin-top: 30px;
+}
+
+.title {
+    font-size: 36px;
+    letter-spacing: 4px;
+    margin-bottom: 20px;
+}
+
+.jukebox {
+    margin: 0 auto;
+    max-width: 800px;
+    padding: 10px;
+}
+
+.playlist {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #444;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    margin-bottom: 15px;
+}
+
+.song {
+    display: flex;
+    align-items: center;
+    margin: 2px;
+    font-size: 18px;
+}
+
+.song-title {
+    flex: 1;
+    margin-right: 10px;
+    color: #f5f5f5;
+}
+
+.play-button {
+    color: white;
+    border: none;
+    padding: 2px;
+    cursor: pointer;
+    font-size: 20px;
+}
+
+.play-button:hover {
+    transform: scale(1.1);
+}
+
+.play-button:focus {
+    outline: none;
+}
+
+audio {
+    margin-top: 20px;
+    width: 100%;
+}
