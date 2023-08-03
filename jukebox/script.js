@@ -55,8 +55,10 @@ const audioFiles = [
 
 const audio = document.getElementById("audio");
 const playlistContainer = document.getElementById("playlist");
+let currentSongIndex = 0;
 
 function play(index) {
+    currentSongIndex = index;
     audio.src = audioFiles[index].url;
     audio.load();
     audio.play();
