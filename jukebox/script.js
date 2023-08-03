@@ -55,6 +55,7 @@ const audioFiles = [
 
 const audio = document.getElementById("audio");
 const playlistContainer = document.getElementById("playlist");
+const autoplayCheckbox = document.getElementById("autoplay-checkbox");
 let currentSongIndex = 0;
 
 function play(index) {
@@ -62,6 +63,7 @@ function play(index) {
     audio.src = audioFiles[index].url;
     audio.load();
     audio.play();
+    updateCurrentlyPlaying();
 }
 
 function pause() {
@@ -84,8 +86,7 @@ function createPlaylist() {
         const songElement = document.createElement("div");
         songElement.classList.add("song");
         songElement.innerHTML = `
-        <span class="song-title">${song.title}</span>
-        <div class="play-button" onclick="play(${index})">&#9654;</div>
+        <span class="song-title" onclick="play(${index})">${song.title}</span>
       `;
         playlistContainer.appendChild(songElement);
     });
@@ -98,6 +99,23 @@ function shuffleArray(array) {
     }
 }
 
-createPlaylist(); // Create the playlist when the page loads
+function updateCurrentlyPlaying() {
+    const songElements = document.querySelectorAll(".song");
+    songElements.forEach((songElement, index) => {
+      if (index === currentSongIndex) {
+        songElement.classList.add("playing");
+        document.title = `${audioFiles[currentSongIndex].title} - Punk Jukebox`;
+      } else {
+        songElement.classList.remove("playing");
+      }
+    });
+  }
 
-audio.addEventListener("ended", playNext);
+createPlaylist(); // Create the playlist when the page loads
+updateCurrentlyPlaying();
+
+audio.addEventListener("ended", () => {
+    if (autoplayCheckbox.checked) {
+      playNext();
+    }
+  });
