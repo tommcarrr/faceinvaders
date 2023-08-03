@@ -104,7 +104,7 @@ function updateCurrentlyPlaying() {
     songElements.forEach((songElement, index) => {
       if (index === currentSongIndex) {
         songElement.classList.add("playing");
-        document.title = `${audioFiles[currentSongIndex].title} - Punk Jukebox`;
+        document.title = `${audioFiles[currentSongIndex].title} - VF Jukebox`;
       } else {
         songElement.classList.remove("playing");
       }
