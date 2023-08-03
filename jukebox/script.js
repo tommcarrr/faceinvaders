@@ -112,7 +112,6 @@ function updateCurrentlyPlaying() {
   }
 
 createPlaylist(); // Create the playlist when the page loads
-updateCurrentlyPlaying();
 
 audio.addEventListener("ended", () => {
     if (autoplayCheckbox.checked) {
