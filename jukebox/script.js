@@ -39,18 +39,6 @@ const audioFiles = [
         title: "We Were Promised Robots",
         url: "songs/We_Were_Promised_Robots.mp3",
     },
-    {
-        title: "Brodette",
-        url: "songs/Brodette.mp3",
-    },
-    {
-        title: "Humdrum",
-        url: "songs/Humdrum.mp3",
-    },
-    {
-        title: "Lemon Meringue Pie",
-        url: "songs/LemonMeringuePie.mp3",
-    },
 ];
 
 const audio = document.getElementById("audio");
