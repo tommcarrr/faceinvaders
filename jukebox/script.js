@@ -29,7 +29,7 @@ const audioFiles = [
     },
     {
         title: "Thud",
-        url: "songs/Thud.mp3",
+        url: "songs/ThudV2.mp3",
     },
     {
         title: "Trickle Down",
@@ -38,6 +38,10 @@ const audioFiles = [
     {
         title: "We Were Promised Robots",
         url: "songs/We_Were_Promised_Robots.mp3",
+    },
+    {
+        title: "Why Aren't You Angrier?",
+        url: "songs/WhyArentYouAngrierV2.mp3",
     },
 ];
 
